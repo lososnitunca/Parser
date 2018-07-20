@@ -62,6 +62,10 @@ CConfig::CConfig(std::string fileName) : MasterCfg { MASTER_ACCOUNT, DEFAULT_MAS
 				SlaveCfg.value = key.get();
 				
 				std::cout << "\t" << SlaveCfg.value << '\n';
+				
+				COPY_STR(config.name, "111");
+				COPY_STR(config.value, "267");
+				std::cout << "\t" << config.value << '\n';
 			}
 		}
 		catch (boost::property_tree::ini_parser_error& error)
@@ -92,9 +96,10 @@ int CConfig::Set(PlugCfg cfg)
 std::string CConfig::CreateIniName()
 {
 	WCHAR  lpFilename[MAX_BUFF];
-	GetModuleFileName(NULL, lpFilename, MAX_BUFF);
-	std::wstring s = lpFilename;
-	std::string stringFilemame(s.begin(), s.end());
-	stringFilemame.replace(stringFilemame.size() - 4, stringFilemame.size(), ".ini");
-	return stringFilemame;
+	char chFilename[256];
+	char *cp;
+	GetModuleFileName(NULL, lpFilename, sizeof(lpFilename) - 5);
+	WideCharToMultiByte(CP_ACP, 0, lpFilename, -1, chFilename, 256, NULL, NULL);
+	if ((cp = strrchr(chFilename, '.')) != NULL) { *cp = 0; strcat(chFilename, ".ini"); }
+	return(chFilename);
 }

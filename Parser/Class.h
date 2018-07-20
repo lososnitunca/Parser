@@ -24,6 +24,8 @@ public:
 	PlugCfg MasterCfg;
 	PlugCfg SlaveCfg;
 
+	PluginCfg config;
+
 	CConfig(std::string fileName);
 	~CConfig();
 
